@@ -4,26 +4,42 @@ export default function QuickStats({ events = [] }) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const todayEvents = events.filter((e) => {
-    const d = new Date(e.date);
+  const parseLocal = (val) => {
+    if (typeof val === "string" && /^\d{4}-\d{2}-\d{2}$/.test(val)) {
+      const [y, m, d] = val.split("-").map(Number);
+      return new Date(y, m - 1, d);
+    }
+    const d = new Date(val);
     d.setHours(0, 0, 0, 0);
+    return d;
+  };
+
+  const todayEvents = events.filter((e) => {
+    const d = parseLocal(e.date);
     return d.getTime() === today.getTime();
   });
 
-  const weekEnd = new Date(today);
-  weekEnd.setDate(today.getDate() + 7);
+  const dayOfWeek = today.getDay();
+
+  const weekStart = new Date(today);
+  weekStart.setDate(today.getDate() - dayOfWeek);
+  weekStart.setHours(0, 0, 0, 0);
+
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + 6);
+  weekEnd.setHours(23, 59, 59, 999);
 
   const weekEvents = events.filter((e) => {
-    const d = new Date(e.date);
-    return d >= today && d <= weekEnd;
+    const d = parseLocal(e.date);
+    return d >= weekStart && d <= weekEnd;
   });
 
   const upcomingNext = events
-    .filter((e) => new Date(e.date) >= today)
-    .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+    .filter((e) => parseLocal(e.date) >= today)
+    .sort((a, b) => parseLocal(a.date) - parseLocal(b.date))[0];
 
   const daysUntilNext = upcomingNext
-    ? Math.ceil((new Date(upcomingNext.date) - today) / (1000 * 60 * 60 * 24))
+    ? Math.ceil((parseLocal(upcomingNext.date) - today) / (1000 * 60 * 60 * 24))
     : null;
 
   const stats = [
@@ -37,7 +53,7 @@ export default function QuickStats({ events = [] }) {
     {
       label: "This Week",
       value: weekEvents.length,
-      sub: weekEvents.length === 1 ? "event" : "events",
+      sub: "Sun - Sat",
       accent: "#60a5fa",
       icon: "◉",
     },
