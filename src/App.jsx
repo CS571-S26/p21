@@ -10,6 +10,7 @@ import {
 import HomePage from "./pages/HomePage";
 import CalendarPage from "./pages/CalendarPage";
 import NavigationBar from "./components/NavigationBar";
+import MealsPage from "./pages/MealsPage"
 
 // ── SEED DATA ──────────────────────────────────────────────────
 function todayStr() {
@@ -405,7 +406,12 @@ function PadiCaliApp() {
       />
 
       <NavigationBar
-        currentPage={location.pathname === "/calendar" ? "calendar" : "home"}
+        currentPage={location.pathname === "/calendar"
+          ? "calendar" 
+          : location.pathname === "/meals"
+          ? "meals"
+          : "home"
+        }
         onNavigate={(page) => navigate(page === "home" ? "/" : `/${page}`)}
         onAdd={() => openAdd(new Date())}
       />
@@ -425,6 +431,7 @@ function PadiCaliApp() {
             />
           }
         />
+
         <Route
           path="/calendar"
           element={
@@ -436,6 +443,11 @@ function PadiCaliApp() {
             />
           }
         />
+
+          <Route 
+            path = "/meals"
+            element = {<MealsPage/>}
+          />
       </Routes>
 
       {modal && (
