@@ -11,6 +11,7 @@ import HomePage from "./pages/HomePage";
 import CalendarPage from "./pages/CalendarPage";
 import NavigationBar from "./components/NavigationBar";
 import MealsPage from "./pages/MealsPage"
+import ListsPage from "./pages/ListsPage"
 
 // ── SEED DATA ──────────────────────────────────────────────────
 function todayStr() {
@@ -410,6 +411,8 @@ function PadiCaliApp() {
           ? "calendar" 
           : location.pathname === "/meals"
           ? "meals"
+          : location.pathname === "/lists"
+          ? "lists"
           : "home"
         }
         onNavigate={(page) => navigate(page === "home" ? "/" : `/${page}`)}
@@ -448,6 +451,10 @@ function PadiCaliApp() {
             path = "/meals"
             element = {<MealsPage/>}
           />
+
+          <Route
+            path = "/lists"
+            element = {<ListsPage />} />
       </Routes>
 
       {modal && (
