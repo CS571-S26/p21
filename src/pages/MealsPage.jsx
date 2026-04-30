@@ -319,7 +319,7 @@ export default function MealsPage() {
         }}
       >
         <h2 style={{ marginTop: 0, marginBottom: 16, fontSize: 22 }}>Add Custom Food</h2>
-          <p style = {{color: "#8aa8c3", fontsize: 13, marginBottom: 16 }}>
+          <p style = {{color: "#8aa8c3", fontSize: 13, marginBottom: 16 }}>
             Nutrition values are estimates and may vary based on preparation and brand.
           </p>
 
