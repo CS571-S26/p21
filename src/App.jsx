@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -23,79 +23,7 @@ function offsetDate(days) {
   return d.toISOString().slice(0, 10);
 }
 
-const SEED_EVENTS = [
-  {
-    id: 1,
-    title: "Team Standup",
-    date: todayStr(),
-    startTime: "09:00",
-    endTime: "09:30",
-    category: "work",
-    location: "Zoom",
-  },
-  {
-    id: 2,
-    title: "Dentist Appointment",
-    date: todayStr(),
-    startTime: "14:00",
-    endTime: "15:00",
-    category: "health",
-    location: "Dr. Kim",
-  },
-  {
-    id: 3,
-    title: "Jake's Soccer Game",
-    date: offsetDate(1),
-    startTime: "10:00",
-    endTime: "12:00",
-    category: "family",
-    location: "Riverside Park",
-  },
-  {
-    id: 4,
-    title: "Product Review",
-    date: offsetDate(2),
-    startTime: "11:00",
-    endTime: "12:00",
-    category: "work",
-    location: "",
-  },
-  {
-    id: 5,
-    title: "Birthday Dinner",
-    date: offsetDate(3),
-    startTime: "19:00",
-    endTime: "21:00",
-    category: "social",
-    location: "Chez Nous",
-  },
-  {
-    id: 6,
-    title: "School Play",
-    date: offsetDate(5),
-    startTime: "18:30",
-    endTime: "20:00",
-    category: "school",
-    location: "Jefferson HS",
-  },
-  {
-    id: 7,
-    title: "Grocery Run",
-    date: offsetDate(6),
-    allDay: true,
-    category: "family",
-    location: "",
-  },
-  {
-    id: 8,
-    title: "Yoga Class",
-    date: offsetDate(7),
-    startTime: "07:00",
-    endTime: "08:00",
-    category: "health",
-    location: "Studio B",
-  },
-];
+const SEED_EVENTS = [];
 
 // ── MODAL ──────────────────────────────────────────────────────
 const C = {
@@ -372,8 +300,27 @@ function EventModal({ event, defaultDate, onSave, onClose }) {
 function PadiCaliApp() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [events, setEvents] = useState(SEED_EVENTS);
+  const [events, setEvents] = useState([]);
+  const [eventsLoaded, setEventsLoaded] = useState(false);
   const [modal, setModal] = useState(null); // { mode: "add"|"edit", event?, defaultDate? }
+
+  useEffect (() => {
+    const savedEvents = localStorage.getItem("padicali-events");
+
+    if (savedEvents) {
+      setEvents(JSON.parse(savedEvents));
+    } else {
+      setEvents(SEED_EVENTS);
+    }
+    
+    setEventsLoaded(true);
+  }, []);
+  
+  useEffect(() => {
+    if (eventsLoaded) {
+      localStorage.setItem("padicali-events", JSON.stringify(events));
+    }
+  }, [events, eventsLoaded]);
 
   const openAdd = (date) =>
     setModal({ mode: "add", defaultDate: date || new Date() });

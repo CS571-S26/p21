@@ -10,10 +10,10 @@ export default function NavigationBar({
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
-    { id: "home", label: "Home", icon: "⌂" },
-    { id: "calendar", label: "Calendar", icon: "◫" },
-    { id: "lists", label: "Lists", icon: "≡" },
-    { id: "meals", label: "Meals", icon: "◉" },
+    { id: "home", label: "Home", icon: "🏠" },
+    { id: "calendar", label: "Calendar", icon: "📅" },
+    { id: "lists", label: "Lists", icon: "✅" },
+    { id: "meals", label: "Meals", icon: "🍽️" },
   ];
 
   return (
@@ -105,7 +105,7 @@ export default function NavigationBar({
                     marginRight: 4,
                   }}
                 >
-                  <span style={{ fontSize: 14 }}>{item.icon}</span>
+                  <span aria-hidden = "true" style={{ fontSize: 14 }}>{item.icon}</span>
                   {item.label}
                 </Nav.Link>
               );

@@ -179,10 +179,22 @@ export default function MealsPage() {
     setCurrentWeekDate(next);
   };
 
-  const addFoodToDate = (food) => {
+  const addFoodToDate = (food, quantity = 1) => {
+    const loggedFood = {
+      ...food,
+      logId: Date.now(),
+      quantity,
+      calories: food.calories * quantity,
+      protein: food.protein * quantity,
+      sodium: food.sodium * quantity,
+      fat: food.fat * quantity, 
+      carbs: food.carbs * quantity,
+      fiber: food.fiber * quantity,
+    };
+
     setMealsByDate((prev) => ({
       ...prev,
-      [selectedDate]: [...(prev[selectedDate] || []), food],
+      [selectedDate]: [...(prev[selectedDate] || []), loggedFood],
     }));
   };
 
@@ -276,6 +288,7 @@ export default function MealsPage() {
 
           return (
             <button
+              type = "button"
               key={key}
               onClick={() => setSelectedDate(key)}
               style={{
@@ -305,13 +318,13 @@ export default function MealsPage() {
           marginBottom: 28,
         }}
       >
-        <h3 style={{ marginTop: 0, marginBottom: 16 }}>Add Custom Food</h3>
+        <h3 style={{ marginTop: 0, marginBottom: 16, fontSize: 22 }}>Add Custom Food</h3>
 
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
-            gap: 10,
+            gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+            gap: 12,
             marginBottom: 12,
           }}
         >
@@ -389,7 +402,7 @@ export default function MealsPage() {
       </div>
 
       <div style={{ marginBottom: 24 }}>
-        <h3>Food Options</h3>
+        <h2 style={{ fontSize: 22, marginBottom: 16 }}> Food Options</h2>
         {foods.map((food) => (
           <MealOptionCard key={food.id} food={food} onAdd={addFoodToDate} />
         ))}
@@ -405,6 +418,7 @@ export default function MealsPage() {
 }
 
 const inputStyle = {
+  width: "100%",
   background: "#162032",
   border: "1px solid #1a2d42",
   borderRadius: 10,
@@ -412,6 +426,7 @@ const inputStyle = {
   padding: "10px 12px",
   fontSize: 14,
   outline: "none",
+  marginTop: 4,
 };
 
 const addButtonStyle = {

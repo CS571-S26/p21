@@ -43,7 +43,7 @@ export default function DailyNutritionSummary({
         padding: 22,
       }}
     >
-      <h3
+      <h2
         style={{
           marginTop: 0,
           marginBottom: 8,
@@ -52,11 +52,11 @@ export default function DailyNutritionSummary({
         }}
       >
         Today&apos;s Summary
-      </h3>
+      </h2>
 
       <p
         style={{
-          color: "#6b8cae",
+          color: "#8aa8c3",
           marginBottom: 18,
           fontSize: 16,
         }}
@@ -68,7 +68,7 @@ export default function DailyNutritionSummary({
         <div style={{ marginBottom: 18 }}>
           {meals.map((meal, index) => (
             <div
-              key={`${meal.id}-${index}`}
+              key={`${meal.logId || meal.id}-${index}`}
               style={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -81,9 +81,12 @@ export default function DailyNutritionSummary({
               }}
             >
               <span>
-                {meal.name} ({meal.serving})
+                {meal.name} ({meal.serving}
+                {meal.quantity ? `x ${meal.quantity}` : ""})
               </span>
+
               <button
+                type = "button"
                 onClick={() => onRemove(index)}
                 style={{
                   background: "#3d1a1a",
@@ -103,7 +106,7 @@ export default function DailyNutritionSummary({
       )}
 
       {meals.length === 0 && (
-        <p style={{ color: "#6b8cae", marginBottom: 18 }}>
+        <p style={{ color: "#8aa8c3", marginBottom: 18 }}>
           No meals logged yet.
         </p>
       )}
@@ -119,11 +122,11 @@ export default function DailyNutritionSummary({
         }}
       >
         <div>{totals.calories} cal</div>
-        <div>{totals.protein}g protein</div>
+        <div>{totals.protein.toFixed(1)}g protein</div>
         <div>{totals.sodium}mg sodium</div>
-        <div>{totals.fat}g fat</div>
-        <div>{totals.carbs}g carbs</div>
-        <div>{totals.fiber}g fiber</div>
+        <div>{totals.fat.toFixed(1)}g fat</div>
+        <div>{totals.carbs.toFixed(1)}g carbs</div>
+        <div>{totals.fiber.toFixed(1)}g fiber</div>
       </div>
     </div>
   );
