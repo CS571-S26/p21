@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {
-  BrowserRouter,
+  HashRouter,
   Routes,
   Route,
   Navigate,
@@ -419,8 +419,8 @@ function PadiCaliApp() {
 // ── ROOT ───────────────────────────────────────────────────────
 export default function App() {
   return (
-    <BrowserRouter basename="/p21/">
+    <HashRouter basename="/p21/">
       <PadiCaliApp />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
