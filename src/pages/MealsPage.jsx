@@ -132,6 +132,7 @@ export default function MealsPage() {
 
   const [foods, setFoods] = useState(defaultFoods);
   const [mealsByDate, setMealsByDate] = useState({});
+  const [loaded, setLoaded] = useState(false);
   const [customFood, setCustomFood] = useState({
     name: "",
     serving: "",
@@ -153,17 +154,18 @@ export default function MealsPage() {
     if (savedFoods) {
       setFoods([...defaultFoods, ...JSON.parse(savedFoods)]);
     }
+
+    setLoaded(true);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("padicali-meals-by-date", JSON.stringify(mealsByDate));
+    if (loaded) {
+      localStorage.setItem("padicali-meals-by-date", JSON.stringify(mealsByDate));
 
-    const customFoodsOnly = foods.filter((food) => food.id >= 1000);
-    localStorage.setItem(
-      "padicali-custom-foods",
-      JSON.stringify(customFoodsOnly),
-    );
-  }, [mealsByDate, foods]);
+      const customFoodsOnly = foods.filter((food) => food.id >= 1000);
+      localStorage.setItem("padicali-custom-foods", JSON.stringify(customFoodsOnly));
+    }
+  }, [mealsByDate, foods, loaded]);
 
   const goToPreviousWeek = () => {
     const prev = new Date(currentWeekDate);

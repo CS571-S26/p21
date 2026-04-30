@@ -13,17 +13,25 @@ const starterItems = [
 export default function ListsPage() {
   const [items, setItems] = useState(starterItems);
   const [filter, setFilter] = useState("All");
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const savedItems = localStorage.getItem("padicali-list-items");
+
     if (savedItems) {
       setItems(JSON.parse(savedItems));
+    } else {
+        setItems(starterItems);
     }
-  }, []);
 
-  useEffect(() => {
-    localStorage.setItem("padicali-list-items", JSON.stringify(items));
-  }, [items]);
+    setLoaded(true);
+  }, []);
+  
+    useEffect(() => {
+        if (loaded) {
+            localStorage.setItem("padicali-list-items", JSON.stringify(items));
+        }
+    }, [items, loaded]);
 
   const addItem = (title, category) => {
     const newItem = {
