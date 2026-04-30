@@ -419,7 +419,7 @@ function PadiCaliApp() {
 // ── ROOT ───────────────────────────────────────────────────────
 export default function App() {
   return (
-    <HashRouter basename="/p21/">
+    <HashRouter>
       <PadiCaliApp />
     </HashRouter>
   );
